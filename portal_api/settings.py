@@ -26,14 +26,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     # Third-party apps
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
     'drf_yasg',
     'django_filters',
-    
+
     # Custom apps
     'users',
     'demo',
@@ -78,11 +78,14 @@ WSGI_APPLICATION = 'portal_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'portal_db',
-        'USER': 'api_service_user',
-        'PASSWORD': 'mypassword',
-        'HOST': 'localhost',
+        'NAME': 'davidaca_portal_db',
+        'USER': 'davidaca_api_service_user',
+        'PASSWORD': 'FgL,O6Bj^D!g',
+        'HOST': 'davidacademy.in',
         'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        },
     }
 }
 
