@@ -65,10 +65,10 @@ class QuestionTypeTests(APITestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        # Verify it's soft deleted and not in list
+        # Verify it's completely deleted from the list
         response = self.client.get(reverse('question-types-list'))
         self.assertEqual(len(response.data['results']), 1)
 
-        # Verify it still exists in database with is_deleted=True
-        question_type = QuestionType.objects.get(id=self.question_type1.id)
-        self.assertTrue(question_type.is_deleted)
+        # Verify it no longer exists in the database
+        with self.assertRaises(QuestionType.DoesNotExist):
+            QuestionType.objects.get(id=self.question_type1.id)

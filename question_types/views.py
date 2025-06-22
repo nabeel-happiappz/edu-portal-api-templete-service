@@ -13,6 +13,5 @@ class QuestionTypeViewSet(viewsets.ModelViewSet):
         return QuestionType.objects.filter(is_deleted=False)
 
     def perform_destroy(self, instance):
-        # Implement soft delete
-        instance.is_deleted = True
-        instance.save()
+        # Perform hard delete
+        instance.delete()
