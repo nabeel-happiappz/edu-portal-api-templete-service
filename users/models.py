@@ -8,7 +8,14 @@ class User(AbstractUser):
     """
     Custom User model with email as username field
     """
+    ROLE_CHOICES = (
+        ('user', 'Regular User'),
+        ('admin', 'Administrator'),
+        ('student', 'Paid Student User'),
+    )
+
     email = models.EmailField(_('email address'), unique=True)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='user')
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
