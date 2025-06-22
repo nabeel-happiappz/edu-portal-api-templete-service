@@ -9,7 +9,7 @@ class Question(models.Model):
     """
     Model for managing educational questions with various question types
     """
-    question_type = models.ForeignKey(QuestionType, on_delete=models.PROTECT, related_name='questions')
+    question_type = models.TextField()
     content = models.TextField()
     options = models.JSONField()
     correct_answer = models.JSONField()
@@ -23,7 +23,7 @@ class Question(models.Model):
     is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.question_type.name}: {self.content[:50]}..."
+        return f"{self.question_type}: {self.content[:50]}..."
 
     class Meta:
         ordering = ['-created_at']
