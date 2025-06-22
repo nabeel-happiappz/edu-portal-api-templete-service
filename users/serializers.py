@@ -33,20 +33,18 @@ class UserWithProfileSerializer(serializers.ModelSerializer):
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-    password_confirm = serializers.CharField(write_only=True, required=True)
-    
+    role = serializers.CharField(write_only=True, required=False)
+
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'password_confirm', 
-                 'first_name', 'last_name')
-    
+        fields = ('email', 'username', 'password', 'first_name', 'last_name', 'role')
+
     def validate(self, attrs):
-        if attrs['password'] != attrs['password_confirm']:
-            raise serializers.ValidationError({"password": "Password fields don't match."})
+        if 'role' in attrs and attrs['role'] not in ('user', 'admin', 'student'):
+            raise serializers.ValidationError({"role": "Role must be one of: user, admin, student"})
         return attrs
-    
+
     def create(self, validated_data):
-        validated_data.pop('password_confirm')
         user = User.objects.create_user(**validated_data)
         return user
 
