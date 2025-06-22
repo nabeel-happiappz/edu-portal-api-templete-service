@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-p0f!j@#5&hm$n%+7p^*0(e@4kxf3!s&vk%e(rw(a+k=x07@(d!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['davidacademy.in', 'www.davidacademy.in']  # Add your domain name here
+ALLOWED_HOSTS = ['.davidacademy.in']  # Add your domain name here
 
 # Application definition
 
