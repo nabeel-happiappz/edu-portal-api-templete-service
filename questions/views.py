@@ -28,9 +28,8 @@ class QuestionViewSet(viewsets.ModelViewSet):
     ordering = ['-created_at']
 
     def get_queryset(self):
-        return Question.objects.filter(is_deleted=False)
+        return Question.objects.all()
 
     def perform_destroy(self, instance):
-        # Implement soft delete
-        instance.is_deleted = True
-        instance.save()
+        # Perform hard delete
+        instance.delete()
