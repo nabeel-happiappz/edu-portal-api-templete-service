@@ -13,9 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-p0f!j@#5&hm$n%+7p^*0(e@4kxf3!s&vk%e(rw(a+k=x07@(d!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['davidacademy.in', 'www.davidacademy.in']  # Add your domain name here
 
 # Application definition
 
@@ -171,7 +171,12 @@ SIMPLE_JWT = {
 }
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = True  # Change this in production
+CORS_ALLOW_ALL_ORIGINS = False  # More secure for production
+CORS_ALLOWED_ORIGINS = [
+    'https://davidacademy.in',
+    'https://www.davidacademy.in',
+    # Add any frontend domains that will access your API
+]
 
 # Celery settings
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
