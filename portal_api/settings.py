@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'exams',
     'adminpanel',
     'question_types',
+    'questions',
 ]
 
 MIDDLEWARE = [
