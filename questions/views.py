@@ -1,6 +1,7 @@
 from rest_framework import viewsets, filters
-from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import AllowAny
+
 from .models import Question
 from .serializers import QuestionSerializer
 
@@ -10,7 +11,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
     ViewSet for managing educational questions
     """
     serializer_class = QuestionSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['question_type', 'department', 'courses', 'roles']
     search_fields = ['content', 'department']
