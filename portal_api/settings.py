@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-p0f!j@#5&hm$n%+7p^*0(e@4kxf3!s&vk%e(rw(a+k=x07@(d!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.davidacademy.in']  # Add your domain name here
+ALLOWED_HOSTS = ['.davidacademy.in', 'api.davidacademy.in', 'app.davidacademy.in', 'www.davidacademy.in', 'davidacademy.in']  # Add your domain name here
 
 # Application definition
 
@@ -44,9 +44,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -171,7 +171,43 @@ SIMPLE_JWT = {
 }
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = True  # Change this in production
+CORS_ALLOW_ALL_ORIGINS = True  # Temporarily set to True for debugging
+
+# Additional CORS settings
+CORS_URLS_REGEX = r'^/api/.*$'  # Apply CORS only to API endpoints
+
+# Allow credentials to be included in CORS requests
+CORS_ALLOW_CREDENTIALS = True
+
+# Security settings for HTTPS
+# CORS_REPLACE_HTTPS_REFERER = True  # Removed - deprecated setting
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = False  # Temporarily disabled for testing
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Allow all the headers required for the API
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+# Allow all methods
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
 # Celery settings
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
