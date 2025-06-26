@@ -26,3 +26,25 @@ To get started:
 
 The API can now be used by the frontend React application with proper CORS handling enabled
 
+
+----------------------------------------------------------------------------------
+
+EMAIL OTP APIS : 
+
+curl --location 'http://127.0.0.1:8000/api/otp/request/' \
+--header 'Content-Type: application/json' \
+--data-raw '  {
+    "identifier": "nabeelhashim.ofc@gmail.com",
+    "otp_type": "email"
+  }'
+
+------
+
+curl --location 'http://127.0.0.1:8000/api/otp/verify/' \
+--header 'Content-Type: application/json' \
+--data-raw '  {
+    "identifier": "nabeelhashim.ofc@gmail.com",
+    "otp_type": "email",
+    "code": "913896"
+  }'
+
