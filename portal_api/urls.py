@@ -36,6 +36,7 @@ urlpatterns = [
     path('api/admin/', include('adminpanel.urls')),
     path('api/', include('question_types.urls')),
     path('api/', include('questions.urls')),
+    path('api/otp/', include('otp_auth.urls')),
 ]
 
 if settings.DEBUG:
