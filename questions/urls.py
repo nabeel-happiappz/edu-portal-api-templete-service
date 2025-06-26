@@ -1,9 +1,9 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import QuestionViewSet
+from .views import QuestionViewSet, QuestionImageUploadView, QuestionImageFetchView
 
 router = DefaultRouter()
-router.register('questions', QuestionViewSet, basename='questions')
+router.register(r'', QuestionViewSet, basename='questions')
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -11,4 +11,16 @@ urlpatterns = [
     # and included in router.urls:
     # - 'questions/user/'
     # - 'questions/student/'
+    # POST   /api/questions/ <pk> /image/   → upload
+    # GET    /api/questions/ <pk> /image/   → fetch
+    path(
+        '<int:pk>/image/',
+        QuestionImageUploadView.as_view(),
+        name='question-image-upload'
+    ),
+    path(
+        '<int:pk>/image/',
+        QuestionImageFetchView.as_view(),
+        name='question-image-fetch'
+    ),
 ]
