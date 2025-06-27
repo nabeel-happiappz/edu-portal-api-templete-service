@@ -94,7 +94,10 @@ class QuestionImageUploadView(APIView):
         url = request.build_absolute_uri(
             settings.MEDIA_URL + f"questions/images/{filename}"
         )
-        return Response({'image_url': url}, status=status.HTTP_201_CREATED)
+        # Save Image url to the Question Model
+        question.image_url = url
+        question.save(update_fields=['image_url'])
+        return Response({'file_name': filename, 'file_path': url}, status=status.HTTP_201_CREATED)
 
 
 class QuestionImageFetchView(APIView):
