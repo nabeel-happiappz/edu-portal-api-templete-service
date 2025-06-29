@@ -11,6 +11,7 @@ class Question(models.Model):
     """
     question_type = models.TextField()
     content = models.TextField()
+    image_url = models.TextField(blank=True, null=True)
     options = models.JSONField()
     correct_answer = models.JSONField()
     explanation = models.TextField(blank=True, null=True)

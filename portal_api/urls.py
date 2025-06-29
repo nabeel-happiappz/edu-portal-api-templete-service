@@ -23,11 +23,13 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
+
     # API documentation
-    path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    
+    path('api/swagger/', schema_view.with_ui('swagger',
+         cache_timeout=0), name='schema-swagger-ui'),
+    path('api/redoc/', schema_view.with_ui('redoc',
+         cache_timeout=0), name='schema-redoc'),
+
     # API endpoints
     path('api/auth/', include('users.auth_urls')),
     path('api/users/', include('users.urls')),
@@ -35,8 +37,9 @@ urlpatterns = [
     path('api/exams/', include('exams.urls')),
     path('api/admin/', include('adminpanel.urls')),
     path('api/', include('question_types.urls')),
-    path('api/', include('questions.urls')),
+    path('api/questions/', include('questions.urls')),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

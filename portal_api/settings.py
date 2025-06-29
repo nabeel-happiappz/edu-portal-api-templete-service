@@ -15,7 +15,9 @@ SECRET_KEY = 'django-insecure-p0f!j@#5&hm$n%+7p^*0(e@4kxf3!s&vk%e(rw(a+k=x07@(d!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.davidacademy.in', 'api.davidacademy.in', 'app.davidacademy.in', 'www.davidacademy.in', 'davidacademy.in']  # Add your domain name here
+ALLOWED_HOSTS = ['.davidacademy.in', 'api.davidacademy.in', 'app.davidacademy.in',
+                 # Add your domain name here
+                 'www.davidacademy.in', 'davidacademy.in', "127.0.0.1", "localhost",]
 
 # Application definition
 
@@ -143,7 +145,8 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
