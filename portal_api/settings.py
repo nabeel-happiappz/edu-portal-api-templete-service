@@ -16,7 +16,8 @@ SECRET_KEY = 'django-insecure-p0f!j@#5&hm$n%+7p^*0(e@4kxf3!s&vk%e(rw(a+k=x07@(d!
 DEBUG = True
 
 ALLOWED_HOSTS = ['.davidacademy.in', 'api.davidacademy.in', 'app.davidacademy.in',
-                 'www.davidacademy.in', 'davidacademy.in', 'localhost', '127.0.0.1']  # Added localhost for development
+                 # Add your domain name here
+                 'www.davidacademy.in', 'davidacademy.in', "127.0.0.1", "localhost",]
 
 # Application definition
 
@@ -82,11 +83,14 @@ WSGI_APPLICATION = 'portal_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'portal_db',
-        'USER': 'api_service_user',
-        'PASSWORD': 'mypassword',
-        'HOST': 'localhost',
+        'NAME': 'davidaca_portal_db',
+        'USER': 'davidaca_api_service_user',
+        'PASSWORD': 'FgL,O6Bj^D!g',
+        'HOST': 'davidacademy.in',
         'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        },
     }
 }
 
@@ -217,10 +221,4 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 
 # Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'nabeelhashim.trojan@gmail.com'
-EMAIL_HOST_PASSWORD = 'psek sctq yzye aaeh'
-DEFAULT_FROM_EMAIL = 'iamnabeelhashim@gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development
