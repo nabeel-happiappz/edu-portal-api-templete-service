@@ -45,13 +45,20 @@ class OTPRequestView(APIView):
 
         # Send OTP (email only for now)
         if otp_type == OTP.EMAIL:
-            send_mail(
-                subject='Your OTP Code',
-                message=f'Your OTP code is {code}. It will expire in {OTP_EXPIRY_MINUTES} minutes.',
-                from_email=None,  # Use DEFAULT_FROM_EMAIL
-                recipient_list=[identifier],
-                fail_silently=False,
-            )
+            try:
+                send_mail(
+                    subject='Your OTP Code',
+                    message=f'Your OTP code is {code}. It will expire in {OTP_EXPIRY_MINUTES} minutes.',
+                    from_email=None,  # Use DEFAULT_FROM_EMAIL
+                    recipient_list=[identifier],
+                    fail_silently=False,
+                )
+            except Exception as e:
+                # Log the error
+                print(f"Email sending error: {str(e)}")
+                # Delete the created OTP to avoid inconsistent state
+                otp.delete()
+                return Response({'detail': f'Failed to send OTP email: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         # For phone, integrate SMS provider in the future
 
         return Response({'detail': 'OTP sent successfully.'}, status=status.HTTP_200_OK)

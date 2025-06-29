@@ -226,5 +226,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'iamnabeelhashim@gmail.com'
-EMAIL_HOST_PASSWORD = 'psek sctq yzye aaeh'
+# Make sure 2-Step Verification is enabled for this Google account and use an App Password
+EMAIL_HOST_PASSWORD = 'xqud iiei incc nogv'  # Replace with a newly generated App Password if this one doesn't work
 DEFAULT_FROM_EMAIL = 'iamnabeelhashim@gmail.com'  # For development
