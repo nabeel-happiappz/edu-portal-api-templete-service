@@ -221,4 +221,10 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 
 # Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'iamnabeelhashim@gmail.com'
+EMAIL_HOST_PASSWORD = 'psek sctq yzye aaeh'
+DEFAULT_FROM_EMAIL = 'iamnabeelhashim@gmail.com'  # For development
