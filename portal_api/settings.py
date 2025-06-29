@@ -10,10 +10,12 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-p0f!j@#5&hm$n%+7p^*0(e@4kxf3!s&vk%e(rw(a+k=x07@(d!'
+# Use environment variable for SECRET_KEY in production
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-p0f!j@#5&hm$n%+7p^*0(e@4kxf3!s&vk%e(rw(a+k=x07@(d!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Set DEBUG to False in production environment
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() != 'false'
 
 ALLOWED_HOSTS = ['.davidacademy.in', 'api.davidacademy.in', 'app.davidacademy.in',
                  # Add your domain name here
@@ -35,6 +37,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'django_filters',
+    'django_extensions',
+
 
     # Custom apps
     'users',
@@ -185,9 +189,14 @@ CORS_ALLOW_CREDENTIALS = True
 # Security settings for HTTPS
 # CORS_REPLACE_HTTPS_REFERER = True  # Removed - deprecated setting
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = False  # Temporarily disabled for testing
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True  # Force redirect HTTP to HTTPS
+SESSION_COOKIE_SECURE = True  # Only send cookies over HTTPS
+CSRF_COOKIE_SECURE = True  # Only send CSRF token cookie over HTTPS
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
+SECURE_HSTS_PRELOAD = True  # Allow preloading of HSTS by browsers
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent MIME type sniffing
+SECURE_BROWSER_XSS_FILTER = True  # Enable XSS protection in browsers
 
 # Allow all the headers required for the API
 CORS_ALLOW_HEADERS = [

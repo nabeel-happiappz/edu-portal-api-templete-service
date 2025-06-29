@@ -9,3 +9,21 @@ django-filter>=23.2
 drf-yasg>=1.21.5
 pytest>=7.3.1
 pytest-django>=4.5.2
+# Base requirements
+django>=3.2,<5.0
+django-cors-headers>=3.10.0
+django-filter>=21.1
+django-rest-framework>=0.1.0
+djangorestframework>=3.12.4
+djangorestframework-simplejwt>=5.0.0
+drf-yasg>=1.20.0
+mysqlclient>=2.1.0
+PyYAML>=6.0
+pytz>=2021.3
+six>=1.16.0
+celery>=5.1.2
+redis>=4.0.2
+
+# SSL requirements
+pyopenssl>=22.0.0
+django-extensions>=3.1.0
