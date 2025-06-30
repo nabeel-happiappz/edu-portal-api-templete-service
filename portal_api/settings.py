@@ -15,7 +15,9 @@ SECRET_KEY = 'django-insecure-p0f!j@#5&hm$n%+7p^*0(e@4kxf3!s&vk%e(rw(a+k=x07@(d!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.davidacademy.in', 'api.davidacademy.in', 'app.davidacademy.in', 'www.davidacademy.in', 'davidacademy.in']  # Add your domain name here
+ALLOWED_HOSTS = ['.davidacademy.in', 'api.davidacademy.in', 'app.davidacademy.in',
+                 # Add your domain name here
+                 'www.davidacademy.in', 'davidacademy.in', "127.0.0.1", "localhost",]
 
 # Application definition
 
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     'adminpanel',
     'question_types',
     'questions',
+    'otp_auth',
 ]
 
 MIDDLEWARE = [
@@ -218,4 +221,11 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 
 # Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'iamnabeelhashim@gmail.com'
+# Make sure 2-Step Verification is enabled for this Google account and use an App Password
+EMAIL_HOST_PASSWORD = 'xqud iiei incc nogv'  # Replace with a newly generated App Password if this one doesn't work
+DEFAULT_FROM_EMAIL = 'iamnabeelhashim@gmail.com'  # For development

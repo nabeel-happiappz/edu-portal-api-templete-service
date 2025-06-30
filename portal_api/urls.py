@@ -35,7 +35,8 @@ urlpatterns = [
     path('api/exams/', include('exams.urls')),
     path('api/admin/', include('adminpanel.urls')),
     path('api/', include('question_types.urls')),
-    path('api/', include('questions.urls')),
+    path('api/otp/', include('otp_auth.urls')),
+    path('api/questions/', include('questions.urls')),
 ]
 
 if settings.DEBUG:
