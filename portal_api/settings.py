@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'adminpanel',
     'question_types',
     'questions',
+    'otp_auth',
 ]
 
 MIDDLEWARE = [
@@ -145,8 +146,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        # 'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
@@ -221,4 +221,11 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 
 # Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'iamnabeelhashim@gmail.com'
+# Make sure 2-Step Verification is enabled for this Google account and use an App Password
+EMAIL_HOST_PASSWORD = 'xqud iiei incc nogv'  # Replace with a newly generated App Password if this one doesn't work
+DEFAULT_FROM_EMAIL = 'iamnabeelhashim@gmail.com'  # For development
