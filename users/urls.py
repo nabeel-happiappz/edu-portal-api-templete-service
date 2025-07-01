@@ -9,4 +9,5 @@ router.register(r'profiles', UserProfileViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('me/', UserViewSet.as_view({'get': 'me'}), name='user-me'),
+    path('<int:pk>/remove/', UserViewSet.as_view({'delete': 'remove'}), name='user-remove'),
 ]
