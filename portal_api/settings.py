@@ -222,10 +222,11 @@ CELERY_TIMEZONE = TIME_ZONE
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'mail.davidacademy.in'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'iamnabeelhashim@gmail.com'
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'info@davidacademy.in'
 # Make sure 2-Step Verification is enabled for this Google account and use an App Password
-EMAIL_HOST_PASSWORD = 'xqud iiei incc nogv'  # Replace with a newly generated App Password if this one doesn't work
-DEFAULT_FROM_EMAIL = 'iamnabeelhashim@gmail.com'  # For development
+EMAIL_HOST_PASSWORD = 'vSqvq6IFtff08t6.'  # Replace with a newly generated App Password if this one doesn't work
+DEFAULT_FROM_EMAIL = 'info@davidacademy.in'
