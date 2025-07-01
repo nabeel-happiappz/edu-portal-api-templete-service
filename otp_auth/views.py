@@ -22,16 +22,24 @@ class OTPRequestView(APIView):
         identifier = serializer.validated_data['identifier']
         otp_type = serializer.validated_data['otp_type']
 
-        # Rate limiting: check for recent unexpired OTPs
+        # Rate limiting: allow resend only after 30 seconds
         now = timezone.now()
+        resend_window = now - timedelta(seconds=30)
         recent_otp = OTP.objects.filter(
             identifier=identifier,
             otp_type=otp_type,
             is_verified=False,
-            expires_at__gt=now
+            created_at__gt=resend_window
         ).order_by('-created_at').first()
         if recent_otp:
             return Response({'detail': 'OTP already sent. Please wait before requesting again.'}, status=status.HTTP_429_TOO_MANY_REQUESTS)
+
+        # Delete all previous OTPs for this identifier and type (cleanup)
+        OTP.objects.filter(
+            identifier=identifier,
+            otp_type=otp_type,
+            is_verified=False
+        ).delete()
 
         # Generate OTP
         code = f"{random.randint(100000, 999999)}"
