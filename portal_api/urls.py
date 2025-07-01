@@ -38,6 +38,7 @@ urlpatterns = [
     path('api/admin/', include('adminpanel.urls')),
     path('api/', include('question_types.urls')),
     path('api/questions/', include('questions.urls')),
+    path('api/reports/', include('reports.urls')),
 ]
 
 if settings.DEBUG:
