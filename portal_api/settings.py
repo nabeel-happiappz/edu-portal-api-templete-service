@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'adminpanel',
     'question_types',
     'questions',
+    'otp_auth',
     'reports',
 ]
 
@@ -146,8 +147,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        # 'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
@@ -222,4 +222,12 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 
 # Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.davidacademy.in'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'info@davidacademy.in'
+# Make sure 2-Step Verification is enabled for this Google account and use an App Password
+EMAIL_HOST_PASSWORD = 'vSqvq6IFtff08t6.'  # Replace with a newly generated App Password if this one doesn't work
+DEFAULT_FROM_EMAIL = 'info@davidacademy.in'

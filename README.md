@@ -26,3 +26,52 @@ To get started:
 
 The API can now be used by the frontend React application with proper CORS handling enabled
 
+
+----------------------------------------------------------------------------------
+David Academy Portal API - APIs
+---------------------------------------------------------------------------------
+
+### Question APIs
+
+curl --location 'http://127.0.0.1:8000/api/questions/' \
+--header 'Content-Type: application/json' \
+--data '{
+    "question_type": 1,
+    "content": "What is the capital of France?",
+    "options": {
+        "A": "London",
+        "B": "Paris",
+        "C": "Berlin",
+        "D": "Madrid"
+    },
+    "correct_answer": {
+        "answer": "B"
+    },
+    "explanation": "Paris is the capital and largest city of France",
+    "duration": 2,
+    "department": "Geography",
+    "courses": ["World Geography", "European Studies"],
+    "roles": ["student", "user"]
+}'
+
+-------------------------------------------------------------------------------------------
+
+EMAIL OTP APIS : 
+
+curl --location 'http://127.0.0.1:8000/api/otp/request/' \
+--header 'Content-Type: application/json' \
+--data-raw '  {
+    "identifier": "nabeelhashim.ofc@gmail.com",
+    "otp_type": "email"
+  }'
+
+------
+
+curl --location 'http://127.0.0.1:8000/api/otp/verify/' \
+--header 'Content-Type: application/json' \
+--data-raw '  {
+    "identifier": "nabeelhashim.ofc@gmail.com",
+    "otp_type": "email",
+    "code": "913896"
+  }'
+

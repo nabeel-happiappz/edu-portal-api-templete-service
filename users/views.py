@@ -91,6 +91,47 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(request.user)
         return Response(serializer.data)
 
+    @action(detail=True, methods=['delete'])
+    def remove(self, request, pk=None):
+        """
+        Explicitly delete a user and all related data
+        """
+        try:
+            user = self.get_object()
+            print(f"Deleting user with ID: {user.id}")
+
+            # Delete related models first
+            UserProfile.objects.filter(user=user).delete()
+            IPLog.objects.filter(user=user).delete()
+            DeviceLock.objects.filter(user=user).delete()
+
+            # Delete the user
+            user.delete()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            print(f"Error in custom delete: {e}")
+            return Response(
+                {"detail": f"Failed to delete user: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    def perform_destroy(self, instance):
+        # Perform hard delete like in QuestionViewSet
+        try:
+            # Force cascade deletion of related objects
+            user_id = instance.id
+            # Delete related models first
+            UserProfile.objects.filter(user_id=user_id).delete()
+            IPLog.objects.filter(user_id=user_id).delete()
+            DeviceLock.objects.filter(user_id=user_id).delete()
+            # Finally delete the user
+            instance.delete()
+        except Exception as e:
+            # Log the error and raise it to make it visible in the response
+            print(f"Error deleting user: {e}")
+            raise
+
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     """
