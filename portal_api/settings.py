@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'question_types',
     'questions',
     'otp_auth',
+    'reports',
 ]
 
 MIDDLEWARE = [
@@ -83,10 +84,10 @@ WSGI_APPLICATION = 'portal_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'davidaca_portal_db',
-        'USER': 'davidaca_api_service_user',
-        'PASSWORD': 'FgL,O6Bj^D!g',
-        'HOST': 'davidacademy.in',
+        'NAME': 'davidaca_db',
+        'USER': 'davidaca_admin',
+        'PASSWORD': 'david@321',
+        'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
