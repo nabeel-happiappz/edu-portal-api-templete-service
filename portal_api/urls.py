@@ -37,6 +37,7 @@ urlpatterns = [
     path('api/', include('question_types.urls')),
     path('api/otp/', include('otp_auth.urls')),
     path('api/questions/', include('questions.urls')),
+    path('api/reports/', include('reports.urls')),
 ]
 
 if settings.DEBUG:

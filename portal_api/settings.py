@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'question_types',
     'questions',
     'otp_auth',
+    'reports',
 ]
 
 MIDDLEWARE = [
