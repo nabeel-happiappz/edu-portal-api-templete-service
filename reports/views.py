@@ -1,5 +1,6 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 from .models import Report
 from .serializers import ReportSerializer
 
@@ -14,6 +15,7 @@ class ReportViewSet(viewsets.ModelViewSet):
     """
     queryset = Report.objects.all().order_by('-created_date')
     serializer_class = ReportSerializer
+    permission_classes = [AllowAny]
 
     # ↓ disable pagination
     pagination_class = None
