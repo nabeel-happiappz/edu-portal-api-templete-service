@@ -255,6 +255,24 @@ class StudentProfileViewSet(viewsets.ModelViewSet):
             )
 
 
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+@authentication_classes([])
+def list_students(request):
+    """
+    Simple function-based view to list all students without authentication
+    """
+    try:
+        students = StudentProfile.objects.all()
+        serializer = StudentProfileSerializer(students, many=True)
+        return Response(serializer.data)
+    except Exception as e:
+        return Response(
+            {"error": f"Failed to fetch students: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
 @authentication_classes([])

@@ -86,9 +86,18 @@ end_date = DateField()                   # Enrollment end date
 **StudentProfileViewSet**
 - **Endpoints**: Standard REST endpoints for student profiles
 - **Purpose**: CRUD operations for existing student profiles
-- **Security**: Authenticated access only
+- **Security**: ❌ **NO AUTHENTICATION REQUIRED** - All endpoints are public
+
+**list_students Function-Based View**
+- **Endpoint**: `GET /api/users/students/list/`
+- **Purpose**: Lists all student profiles
+- **Security**: ❌ **NO AUTHENTICATION REQUIRED** - Public access
 
 ## API Endpoints
+
+### Student Management APIs
+
+**❌ ALL STUDENT APIs ARE PUBLIC - NO AUTHENTICATION REQUIRED**
 
 ### Create Student
 ```http
@@ -150,12 +159,33 @@ Content-Type: application/json
 ```
 
 ### Student Profile Management
+
+**❌ NO AUTHENTICATION REQUIRED FOR ANY ENDPOINT**
+
 ```http
-GET /api/users/student-profiles/     # List student profiles
-GET /api/users/student-profiles/{id} # Get specific profile
-PUT /api/users/student-profiles/{id} # Update profile
-DELETE /api/users/student-profiles/{id} # Delete profile
+# List all students (Function-based view - RECOMMENDED)
+GET /api/users/students/list/
+
+# Get all students (ViewSet - Alternative)  
+GET /api/users/student-profiles/
+
+# Get student by ID
+GET /api/users/student-profiles/{id}/
+
+# Get student by username
+GET /api/users/student-profiles/by_username/?username={username}
+
+# Update student profile
+PUT /api/users/student-profiles/{id}/
+
+# Soft delete student
+DELETE /api/users/student-profiles/{id}/
+
+# Hard delete student (completely removes all related data)
+DELETE /api/users/student-profiles/{id}/hard_delete/
 ```
+
+**📝 Note:** Use `GET /api/users/students/list/` for listing all students as it's guaranteed to work without authentication issues.
 
 ## Database Schema
 
@@ -300,12 +330,101 @@ python test_student_creation.py
 2. Access API documentation: `http://localhost:8000/api/swagger/`
 3. Test endpoint: `POST http://localhost:8000/api/students/create`
 
+### Postman Collection
+
+**Environment Setup:**
+- Base URL: `http://127.0.0.1:8000` or `http://localhost:8000`
+- No authentication headers required
+
+**Complete Test Collection:**
+
+1. **Create Student**
+   ```
+   POST {{base_url}}/api/students/create
+   Content-Type: application/json
+   
+   Body:
+   {
+     "name": "John Doe",
+     "email": "john.doe@example.com",
+     "username": "johndoe123",
+     "password": "securepassword123",
+     "mobile": "1234567890",
+     "countryCode": "+1",
+     "address": "123 Main St",
+     "district": "Downtown",
+     "state": "California",
+     "pinCode": "90210",
+     "courses": ["Nursing", "Healthcare"],
+     "startDate": "2024-01-01",
+     "endDate": "2024-12-31"
+   }
+   ```
+
+2. **Get All Students (Recommended)**
+   ```
+   GET {{base_url}}/api/users/students/list/
+   ```
+
+3. **Get All Students (Alternative)**
+   ```
+   GET {{base_url}}/api/users/student-profiles/
+   ```
+
+4. **Get Student by ID**
+   ```
+   GET {{base_url}}/api/users/student-profiles/1/
+   ```
+
+5. **Get Student by Username**
+   ```
+   GET {{base_url}}/api/users/student-profiles/by_username/?username=johndoe123
+   ```
+
+6. **Update Student**
+   ```
+   PUT {{base_url}}/api/users/student-profiles/1/
+   Content-Type: application/json
+   
+   Body:
+   {
+     "name": "John Smith Updated",
+     "mobile": "9876543210",
+     "address": "456 Oak Ave Updated",
+     "district": "Uptown",
+     "state": "New York",
+     "pinCode": "10001",
+     "courses": ["Advanced Nursing", "Critical Care"]
+   }
+   ```
+
+7. **Soft Delete Student**
+   ```
+   DELETE {{base_url}}/api/users/student-profiles/1/
+   ```
+
+8. **Hard Delete Student (Complete Removal)**
+   ```
+   DELETE {{base_url}}/api/users/student-profiles/1/hard_delete/
+   ```
+
+**Test Flow:**
+1. Create a student using endpoint #1
+2. Note the student ID from the response
+3. Test retrieval using endpoints #2-5
+4. Update the student using endpoint #6 with the noted ID
+5. Verify update by getting student by ID
+6. Test deletion using endpoint #7 or #8
+
 ## Security Considerations
 
 1. **Password Security**: Uses Django's built-in password validation
 2. **Data Validation**: Comprehensive input validation at multiple layers
 3. **SQL Injection**: Protected by Django ORM
-4. **Access Control**: Profile access restricted to owners and admins
+4. **⚠️ Access Control**: **ALL STUDENT APIs ARE PUBLIC** - No authentication required
+   - Anyone can create, read, update, and delete students
+   - This is intentional for the current implementation
+   - Consider adding authentication in production environments
 
 ## Future Enhancements
 
