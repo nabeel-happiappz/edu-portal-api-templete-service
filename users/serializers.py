@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
-from .models import UserProfile, GuestProfile, IPLog, DeviceLock
+from .models import UserProfile, GuestProfile, IPLog, DeviceLock, StudentProfile
 
 User = get_user_model()
 
@@ -88,3 +88,57 @@ class DeviceLockSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'user_email', 'device_fingerprint', 
                  'is_locked', 'locked_reason', 'created_at', 'updated_at')
         read_only_fields = ('id', 'created_at', 'updated_at')
+
+
+class StudentProfileSerializer(serializers.ModelSerializer):
+    user_email = serializers.EmailField(source='user.email', read_only=True)
+    is_enrollment_active = serializers.BooleanField(read_only=True)
+    full_mobile = serializers.CharField(read_only=True)
+    
+    class Meta:
+        model = StudentProfile
+        fields = ('id', 'user', 'user_email', 'name', 'address', 'district', 
+                 'state', 'pin_code', 'courses', 'mobile', 'country_code', 
+                 'mobile_verified', 'email', 'email_verified', 'start_date', 
+                 'end_date', 'is_enrollment_active', 'full_mobile', 
+                 'created_at', 'updated_at')
+        read_only_fields = ('id', 'created_at', 'updated_at', 'is_enrollment_active', 'full_mobile')
+
+
+class StudentCreationSerializer(serializers.Serializer):
+    """Serializer for creating a student with both user and profile data - NO VALIDATION"""
+    
+    # User fields
+    email = serializers.EmailField(required=False)
+    username = serializers.CharField(required=False)
+    password = serializers.CharField(write_only=True, required=False)
+    
+    # Student profile fields
+    name = serializers.CharField(required=False, max_length=255, allow_blank=True)
+    address = serializers.CharField(required=False, allow_blank=True)
+    district = serializers.CharField(required=False, max_length=100, allow_blank=True)
+    state = serializers.CharField(required=False, max_length=100, allow_blank=True)
+    pinCode = serializers.CharField(required=False, max_length=10, allow_blank=True)
+    courses = serializers.ListField(
+        child=serializers.CharField(max_length=100),
+        required=False,
+        default=list,
+        allow_empty=True
+    )
+    mobile = serializers.CharField(required=False, max_length=20, allow_blank=True)
+    countryCode = serializers.CharField(required=False, max_length=5, default="+1", allow_blank=True)
+    mobileVerified = serializers.BooleanField(required=False, default=False)
+    emailVerified = serializers.BooleanField(required=False, default=False)
+    startDate = serializers.DateField(required=False, format="%Y-%m-%d", allow_null=True)
+    endDate = serializers.DateField(required=False, format="%Y-%m-%d", allow_null=True)
+
+
+class UserWithStudentProfileSerializer(serializers.ModelSerializer):
+    """Serializer for user with student profile information"""
+    student_profile = StudentProfileSerializer(read_only=True)
+    
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'username', 'first_name', 'last_name', 
+                 'is_active', 'role', 'student_profile')
+        read_only_fields = ('id', 'is_active')

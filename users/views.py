@@ -1,18 +1,20 @@
 from rest_framework import status, viewsets, generics, permissions
 from rest_framework.response import Response
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from .models import UserProfile, GuestProfile, IPLog, DeviceLock
+from .models import UserProfile, GuestProfile, IPLog, DeviceLock, StudentProfile
 from .serializers import (
     UserSerializer, UserProfileSerializer, UserWithProfileSerializer,
     RegisterSerializer, LoginSerializer, GuestProfileSerializer,
     GuestRegisterSerializer, OTPVerifySerializer, IPLogSerializer,
-    DeviceLockSerializer
+    DeviceLockSerializer, StudentProfileSerializer, StudentCreationSerializer,
+    UserWithStudentProfileSerializer
 )
 from .permissions import IsOwnerOrAdmin
+from .services import StudentService
 
 User = get_user_model()
 
@@ -145,3 +147,63 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         if self.request.user.is_staff:
             return UserProfile.objects.all()
         return UserProfile.objects.filter(user=self.request.user)
+
+
+class StudentProfileViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for student profile management
+    """
+    queryset = StudentProfile.objects.all()
+    serializer_class = StudentProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return StudentProfile.objects.all()
+        # Only return the student's own profile
+        return StudentProfile.objects.filter(user=self.request.user)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])  # Allow anyone to create students
+def create_student(request):
+    """
+    API endpoint for creating a student with both user account and student profile
+    NO VALIDATION - accepts any JSON data and creates student with defaults
+    
+    Endpoint: POST /api/students/create
+    
+    This endpoint accepts any student data and creates:
+    1. A User account with role='student'
+    2. A StudentProfile with detailed student information
+    
+    Missing fields are filled with defaults. All operations are wrapped in a transaction.
+    """
+    
+    try:
+        # Use raw request data directly - no validation
+        student_data = request.data if request.data else {}
+        
+        # Use the service layer to create the student
+        user, student_profile = StudentService.create_student(student_data)
+        
+        # Return the created user and profile data
+        user_serializer = UserWithStudentProfileSerializer(user)
+        
+        return Response(
+            {
+                "message": "Student created successfully",
+                "user": user_serializer.data,
+                "student_id": student_profile.id
+            },
+            status=status.HTTP_201_CREATED
+        )
+        
+    except Exception as e:
+        return Response(
+            {
+                "error": "Student creation failed",
+                "details": str(e)
+            },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
