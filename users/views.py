@@ -1,10 +1,11 @@
 from rest_framework import status, viewsets, generics, permissions
 from rest_framework.response import Response
-from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.decorators import action, api_view, permission_classes, authentication_classes
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
+from django.db import transaction
 from .models import UserProfile, GuestProfile, IPLog, DeviceLock, StudentProfile
 from .serializers import (
     UserSerializer, UserProfileSerializer, UserWithProfileSerializer,
@@ -155,17 +156,108 @@ class StudentProfileViewSet(viewsets.ModelViewSet):
     """
     queryset = StudentProfile.objects.all()
     serializer_class = StudentProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []  # Remove all authentication requirements
+    
+    def get_permissions(self):
+        """
+        Override to ensure AllowAny for all actions
+        """
+        return [permissions.AllowAny()]
+    
+    def get_authenticators(self):
+        """
+        Override to remove all authenticators
+        """
+        return []
     
     def get_queryset(self):
-        if self.request.user.is_staff:
-            return StudentProfile.objects.all()
-        # Only return the student's own profile
-        return StudentProfile.objects.filter(user=self.request.user)
+        # Return all student profiles since authentication is removed
+        return StudentProfile.objects.all()
+    
+    def list(self, request, *args, **kwargs):
+        """
+        Override list method to ensure no authentication is required
+        """
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def by_username(self, request):
+        """
+        Get student profile by username
+        Usage: GET /api/users/student-profiles/by_username/?username=student123
+        """
+        username = request.query_params.get('username')
+        if not username:
+            return Response(
+                {"error": "Username parameter is required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            user = User.objects.get(username=username)
+            student_profile = StudentProfile.objects.get(user=user)
+            
+            # No authentication required - return student profile
+            serializer = self.get_serializer(student_profile)
+            return Response(serializer.data)
+            
+        except User.DoesNotExist:
+            return Response(
+                {"error": "User not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except StudentProfile.DoesNotExist:
+            return Response(
+                {"error": "Student profile not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+    
+    @action(detail=True, methods=['delete'])
+    def hard_delete(self, request, pk=None):
+        """
+        Completely delete a student and all related data from the database
+        Usage: DELETE /api/users/student-profiles/{id}/hard_delete/
+        """
+        try:
+            student_profile = self.get_object()
+            user = student_profile.user
+            
+            # No authentication required - allow anyone to delete students
+            # Delete all related data in proper order
+            with transaction.atomic():
+                # Delete IP logs
+                IPLog.objects.filter(user=user).delete()
+                
+                # Delete device locks
+                DeviceLock.objects.filter(user=user).delete()
+                
+                # Delete user profile if exists
+                UserProfile.objects.filter(user=user).delete()
+                
+                # Delete student profile
+                student_profile.delete()
+                
+                # Finally delete the user
+                user.delete()
+            
+            return Response(
+                {"message": "Student and all related data deleted successfully"},
+                status=status.HTTP_204_NO_CONTENT
+            )
+            
+        except Exception as e:
+            return Response(
+                {"error": f"Failed to delete student: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 @api_view(['POST'])
-@permission_classes([permissions.AllowAny])  # Allow anyone to create students
+@permission_classes([permissions.AllowAny])
+@authentication_classes([])
 def create_student(request):
     """
     API endpoint for creating a student with both user account and student profile
