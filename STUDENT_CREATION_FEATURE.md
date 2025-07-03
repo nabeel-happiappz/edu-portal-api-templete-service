@@ -65,8 +65,9 @@ end_date = DateField()                   # Enrollment end date
 **StudentProfileSerializer**
 - **Purpose**: Handles student profile CRUD operations
 - **Features**:
-  - Read-only computed fields (is_enrollment_active, full_mobile)
-  - Complete profile serialization
+  - Read-only computed fields (is_enrollment_active, full_mobile, user_email, user_username)
+  - Complete profile serialization with related user data
+  - Includes username in API responses for easy identification
 
 **UserWithStudentProfileSerializer**
 - **Purpose**: Returns user data with embedded student profile
@@ -364,6 +365,33 @@ python test_student_creation.py
 2. **Get All Students (Recommended)**
    ```
    GET {{base_url}}/api/users/students/list/
+   
+   Sample Response:
+   [
+     {
+       "id": 2,
+       "user": 38,
+       "user_email": "john.student1@example.com",
+       "user_username": "john_student1",
+       "name": "John Student",
+       "address": "123 Main St, Apt 4B",
+       "district": "Central",
+       "state": "California",
+       "pin_code": "90001",
+       "courses": ["NCLEX", "DHA"],
+       "mobile": "555-123-4567",
+       "country_code": "+1",
+       "mobile_verified": true,
+       "email": "john.student1@example.com",
+       "email_verified": true,
+       "start_date": "2024-01-15",
+       "end_date": "2024-07-15",
+       "is_enrollment_active": false,
+       "full_mobile": "+1555-123-4567",
+       "created_at": "2025-07-03T19:04:18.758715Z",
+       "updated_at": "2025-07-03T19:04:18.758753Z"
+     }
+   ]
    ```
 
 3. **Get All Students (Alternative)**

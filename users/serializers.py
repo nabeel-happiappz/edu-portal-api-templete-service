@@ -92,17 +92,18 @@ class DeviceLockSerializer(serializers.ModelSerializer):
 
 class StudentProfileSerializer(serializers.ModelSerializer):
     user_email = serializers.EmailField(source='user.email', read_only=True)
+    user_username = serializers.CharField(source='user.username', read_only=True)
     is_enrollment_active = serializers.BooleanField(read_only=True)
     full_mobile = serializers.CharField(read_only=True)
     
     class Meta:
         model = StudentProfile
-        fields = ('id', 'user', 'user_email', 'name', 'address', 'district', 
+        fields = ('id', 'user', 'user_email', 'user_username', 'name', 'address', 'district', 
                  'state', 'pin_code', 'courses', 'mobile', 'country_code', 
                  'mobile_verified', 'email', 'email_verified', 'start_date', 
                  'end_date', 'is_enrollment_active', 'full_mobile', 
                  'created_at', 'updated_at')
-        read_only_fields = ('id', 'created_at', 'updated_at', 'is_enrollment_active', 'full_mobile')
+        read_only_fields = ('id', 'created_at', 'updated_at', 'is_enrollment_active', 'full_mobile', 'user_username')
 
 
 class StudentCreationSerializer(serializers.Serializer):
