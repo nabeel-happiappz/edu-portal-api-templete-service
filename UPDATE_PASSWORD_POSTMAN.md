@@ -123,13 +123,13 @@ Content-Type: application/json
 }
 ```
 
-### **Step 3: Verify Login with New Password**
+### **Step 3: Verify Login with New Password (using email)**
 ```json
 POST http://127.0.0.1:8000/api/auth/login/
 Content-Type: application/json
 
 {
-  "email": "testuser@example.com",
+  "username_or_email": "testuser@example.com",
   "password": "updatedPassword456!"
 }
 ```

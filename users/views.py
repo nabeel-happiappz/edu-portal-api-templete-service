@@ -37,14 +37,32 @@ class LoginView(TokenObtainPairView):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        email = serializer.validated_data['email']
+        username_or_email = serializer.validated_data['username_or_email']
         password = serializer.validated_data['password']
 
-        user = get_object_or_404(User, email=email)
+        # Determine if input is email or username
+        if '@' in username_or_email:
+            # It's an email
+            try:
+                user = User.objects.get(email=username_or_email)
+            except User.DoesNotExist:
+                return Response(
+                    {"detail": "Invalid credentials"},
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
+        else:
+            # It's a username
+            try:
+                user = User.objects.get(username=username_or_email)
+            except User.DoesNotExist:
+                return Response(
+                    {"detail": "Invalid credentials"},
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
 
         if not user.check_password(password):
             return Response(
-                {"detail": "No active account found with the given credentials"},
+                {"detail": "Invalid credentials"},
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
@@ -279,14 +297,27 @@ def list_students(request):
 @authentication_classes([])
 def update_password_with_old(request):
     """
-    Update password using the old password and username
+    Update password using the old password and username or email
     """
-    username = request.data.get('username')
+    username_or_email = request.data.get('username') or request.data.get('username_or_email')
     old_password = request.data.get('old_password')
     new_password = request.data.get('new_password')
 
+    if not username_or_email:
+        return Response({"detail": "Username or email is required."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    if not old_password:
+        return Response({"detail": "Old password is required."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    if not new_password:
+        return Response({"detail": "New password is required."}, status=status.HTTP_400_BAD_REQUEST)
+
     try:
-        user = User.objects.get(username=username)
+        # Determine if input is email or username
+        if '@' in username_or_email:
+            user = User.objects.get(email=username_or_email)
+        else:
+            user = User.objects.get(username=username_or_email)
 
         if not user.check_password(old_password):
             return Response({"detail": "Incorrect old password."}, status=status.HTTP_400_BAD_REQUEST)
@@ -306,13 +337,23 @@ def update_password_with_old(request):
 @authentication_classes([])
 def update_password_with_username(request):
     """
-    Update password using only the username
+    Update password using only the username or email
     """
-    username = request.data.get('username')
+    username_or_email = request.data.get('username') or request.data.get('username_or_email')
     new_password = request.data.get('new_password')
 
+    if not username_or_email:
+        return Response({"detail": "Username or email is required."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    if not new_password:
+        return Response({"detail": "New password is required."}, status=status.HTTP_400_BAD_REQUEST)
+
     try:
-        user = User.objects.get(username=username)
+        # Determine if input is email or username
+        if '@' in username_or_email:
+            user = User.objects.get(email=username_or_email)
+        else:
+            user = User.objects.get(username=username_or_email)
 
         user.set_password(new_password)
         user.save()
