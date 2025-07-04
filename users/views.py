@@ -79,7 +79,8 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOwnerOrAdmin]
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []  # Remove all authentication requirements
     
     def get_serializer_class(self):
         if self.action == 'me' or self.action == 'retrieve':
@@ -276,6 +277,53 @@ def list_students(request):
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
 @authentication_classes([])
+def update_password_with_old(request):
+    """
+    Update password using the old password and username
+    """
+    username = request.data.get('username')
+    old_password = request.data.get('old_password')
+    new_password = request.data.get('new_password')
+
+    try:
+        user = User.objects.get(username=username)
+
+        if not user.check_password(old_password):
+            return Response({"detail": "Incorrect old password."}, status=status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(new_password)
+        user.save()
+
+        return Response({"detail": "Password updated successfully."})
+    except User.DoesNotExist:
+        return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
+@authentication_classes([])
+def update_password_with_username(request):
+    """
+    Update password using only the username
+    """
+    username = request.data.get('username')
+    new_password = request.data.get('new_password')
+
+    try:
+        user = User.objects.get(username=username)
+
+        user.set_password(new_password)
+        user.save()
+
+        return Response({"detail": "Password updated successfully."})
+    except User.DoesNotExist:
+        return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 def create_student(request):
     """
     API endpoint for creating a student with both user account and student profile
