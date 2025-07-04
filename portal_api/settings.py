@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'questions',
     'otp_auth',
     'reports',
+    'packages',
 ]
 
 MIDDLEWARE = [

@@ -39,6 +39,7 @@ urlpatterns = [
     path('api/otp/', include('otp_auth.urls')),
     path('api/questions/', include('questions.urls')),
     path('api/reports/', include('reports.urls')),
+    path('api/', include('packages.urls')),
     
     # Student creation endpoint
     path('api/students/create', create_student, name='create-student'),
