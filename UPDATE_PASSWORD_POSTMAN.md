@@ -11,7 +11,7 @@ Base URL: http://127.0.0.1:8000
 
 ## 📋 API Endpoints
 
-### **1. Update Password with Old Password and Username**
+### **1. Update Password with Old Password and Username/Email**
 - **URL:** `http://127.0.0.1:8000/api/auth/update-password-with-old/`
 - **Method:** `POST`
 - **Authentication:** None Required
@@ -22,7 +22,7 @@ Base URL: http://127.0.0.1:8000
   }
   ```
 
-### **2. Update Password with Only Username**
+### **2. Update Password with Only Username/Email**
 - **URL:** `http://127.0.0.1:8000/api/auth/update-password/`
 - **Method:** `POST`
 - **Authentication:** None Required
@@ -51,7 +51,7 @@ Base URL: http://127.0.0.1:8000
 **Body (raw JSON):**
 ```json
 {
-  "username": "testuser",
+  "username_or_email": "testuser",
   "old_password": "aSecurePassword123!",
   "new_password": "newSecurePassword456!"
 }
@@ -80,7 +80,7 @@ Base URL: http://127.0.0.1:8000
 **Body (raw JSON):**
 ```json
 {
-  "username": "testuser",
+  "username_or_email": "testuser",
   "new_password": "anotherNewPassword789!"
 }
 ```
@@ -117,7 +117,7 @@ POST http://127.0.0.1:8000/api/auth/update-password-with-old/
 Content-Type: application/json
 
 {
-  "username": "testuser",
+  "username_or_email": "testuser",
   "old_password": "initialPassword123!",
   "new_password": "updatedPassword456!"
 }
@@ -140,7 +140,7 @@ POST http://127.0.0.1:8000/api/auth/update-password/
 Content-Type: application/json
 
 {
-  "username": "testuser",
+  "username_or_email": "testuser",
   "new_password": "finalPassword789!"
 }
 ```
@@ -168,7 +168,7 @@ Content-Type: application/json
 **Body (raw JSON):**
 ```json
 {
-  "username": "nonexistentuser",
+  "username_or_email": "nonexistentuser",
   "new_password": "somepassword123!"
 }
 ```

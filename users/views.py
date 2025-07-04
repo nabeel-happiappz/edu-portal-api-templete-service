@@ -299,7 +299,7 @@ def update_password_with_old(request):
     """
     Update password using the old password and username or email
     """
-    username_or_email = request.data.get('username') or request.data.get('username_or_email')
+    username_or_email = request.data.get('username_or_email')
     old_password = request.data.get('old_password')
     new_password = request.data.get('new_password')
 
@@ -339,7 +339,7 @@ def update_password_with_username(request):
     """
     Update password using only the username or email
     """
-    username_or_email = request.data.get('username') or request.data.get('username_or_email')
+    username_or_email = request.data.get('username_or_email')
     new_password = request.data.get('new_password')
 
     if not username_or_email:
