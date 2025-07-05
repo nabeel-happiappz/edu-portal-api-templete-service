@@ -85,11 +85,14 @@ WSGI_APPLICATION = 'portal_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'portal_db',
-        'USER': 'api_service_user',
-        'PASSWORD': 'mypassword',
-        'HOST': 'localhost',
+        'NAME': 'davidaca_portal_db',
+        'USER': 'davidaca_api_service_user',
+        'PASSWORD': 'x(+@bP@pY4nXYi^J',
+        'HOST': 'davidacademy.in',
         'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        },
     }
 }
 
