@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'portal_api.middleware.CSRFExemptMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -183,6 +184,21 @@ CORS_URLS_REGEX = r'^/api/.*$'  # Apply CORS only to API endpoints
 
 # Allow credentials to be included in CORS requests
 CORS_ALLOW_CREDENTIALS = True
+
+# CSRF settings - Exempt API endpoints from CSRF protection
+CSRF_TRUSTED_ORIGINS = [
+    'https://davidacademy.in',
+    'https://www.davidacademy.in',
+    'https://api.davidacademy.in',
+    'https://app.davidacademy.in',
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+]
+
+# Exempt all API endpoints from CSRF protection
+CSRF_EXEMPT_URLS = [
+    r'^/api/.*$',
+]
 
 # Security settings for HTTPS
 # CORS_REPLACE_HTTPS_REFERER = True  # Removed - deprecated setting

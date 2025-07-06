@@ -3,10 +3,12 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from .models import Package
 from .serializers import PackageSerializer, PackageCreateUpdateSerializer
 
 
+@csrf_exempt
 @api_view(['GET', 'POST'])
 @permission_classes([AllowAny])
 def list_create_packages(request):
@@ -37,6 +39,7 @@ def list_create_packages(request):
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
+@csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([AllowAny])
 def package_detail(request, package_id):

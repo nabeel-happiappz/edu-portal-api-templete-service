@@ -1,6 +1,7 @@
 from rest_framework import status, viewsets, generics, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action, api_view, permission_classes, authentication_classes
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
@@ -365,6 +366,10 @@ def update_password_with_username(request):
         return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
+@authentication_classes([])
 def create_student(request):
     """
     API endpoint for creating a student with both user account and student profile
