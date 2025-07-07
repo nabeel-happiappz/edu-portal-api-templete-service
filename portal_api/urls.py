@@ -8,7 +8,7 @@ from django.conf.urls.static import static
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from users.views import create_student
+from users.views import create_student, convert_user_to_student
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -43,6 +43,9 @@ urlpatterns = [
     
     # Student creation endpoint
     path('api/students/create', create_student, name='create-student'),
+    
+    # User to student conversion endpoint
+    path('api/users/convert-to-student', convert_user_to_student, name='convert-user-to-student'),
 ]
 
 if settings.DEBUG:

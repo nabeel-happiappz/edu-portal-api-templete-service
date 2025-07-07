@@ -411,3 +411,97 @@ def create_student(request):
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
+@authentication_classes([])
+def convert_user_to_student(request):
+    """
+    API endpoint for converting an existing user to a student
+    
+    Endpoint: POST /api/users/convert-to-student
+    
+    This endpoint accepts:
+    - email or user_id to identify the existing user
+    - student profile data to create the StudentProfile
+    
+    Request body example:
+    {
+        "email": "user@example.com",  // or "user_id": 123
+        "name": "John Student",
+        "address": "123 Main St",
+        "district": "Central",
+        "state": "California",
+        "pinCode": "90001",
+        "courses": ["NCLEX", "DHA"],
+        "mobile": "555-123-4567",
+        "countryCode": "+1",
+        "mobileVerified": true,
+        "emailVerified": true,
+        "startDate": "2024-01-15",
+        "endDate": "2024-07-15"
+    }
+    """
+    
+    try:
+        # Get request data
+        request_data = request.data if request.data else {}
+        
+        # Find the user by email or user_id
+        user = None
+        if request_data.get('email'):
+            try:
+                user = User.objects.get(email=request_data['email'])
+            except User.DoesNotExist:
+                return Response(
+                    {
+                        "error": "User not found",
+                        "details": f"No user found with email: {request_data['email']}"
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
+        elif request_data.get('user_id'):
+            try:
+                user = User.objects.get(id=request_data['user_id'])
+            except User.DoesNotExist:
+                return Response(
+                    {
+                        "error": "User not found",
+                        "details": f"No user found with ID: {request_data['user_id']}"
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
+        else:
+            return Response(
+                {
+                    "error": "Missing user identifier",
+                    "details": "Please provide either 'email' or 'user_id' to identify the user"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Use the service layer to convert the user
+        user, student_profile = StudentService.convert_user_to_student(user, request_data)
+        
+        # Return the updated user and profile data
+        user_serializer = UserWithStudentProfileSerializer(user)
+        
+        return Response(
+            {
+                "message": "User converted to student successfully",
+                "user": user_serializer.data,
+                "student_id": student_profile.id
+            },
+            status=status.HTTP_200_OK
+        )
+        
+    except Exception as e:
+        return Response(
+            {
+                "error": "User to student conversion failed",
+                "details": str(e)
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )

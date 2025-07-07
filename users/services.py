@@ -158,3 +158,82 @@ class StudentService:
         
         student_profile.save()
         return student_profile
+    
+    @staticmethod
+    @transaction.atomic
+    def convert_user_to_student(user, student_data):
+        """
+        Convert an existing user to a student by creating a student profile
+        
+        Args:
+            user: User instance to convert
+            student_data (dict): Dictionary containing student profile data
+            
+        Returns:
+            tuple: (user, student_profile) on success
+            
+        Raises:
+            Exception: If conversion fails or user already has a student profile
+        """
+        try:
+            # Check if user already has a student profile
+            if hasattr(user, 'studentprofile'):
+                raise Exception("User already has a student profile")
+            
+            # Update user role to student
+            user.role = 'student'
+            user.save()
+            
+            from datetime import date, timedelta
+            
+            # Prepare profile data with defaults for missing fields
+            profile_data = {
+                'name': student_data.get('name') or user.get_full_name() or 'Unknown Student',
+                'address': student_data.get('address') or '',
+                'district': student_data.get('district') or '',
+                'state': student_data.get('state') or '',
+                'pin_code': student_data.get('pinCode') or '',
+                'courses': student_data.get('courses') or [],
+                'mobile': student_data.get('mobile') or '',
+                'country_code': student_data.get('countryCode') or '+1',
+                'mobile_verified': student_data.get('mobileVerified', False),
+                'email': user.email,  # Use the user's existing email
+                'email_verified': student_data.get('emailVerified', False),
+                'start_date': None,
+                'end_date': None
+            }
+            
+            # Handle date fields with defaults
+            if student_data.get('startDate'):
+                try:
+                    if isinstance(student_data['startDate'], str):
+                        profile_data['start_date'] = datetime.strptime(student_data['startDate'], '%Y-%m-%d').date()
+                    else:
+                        profile_data['start_date'] = student_data['startDate']
+                except:
+                    profile_data['start_date'] = date.today()
+            else:
+                profile_data['start_date'] = date.today()
+            
+            if student_data.get('endDate'):
+                try:
+                    if isinstance(student_data['endDate'], str):
+                        profile_data['end_date'] = datetime.strptime(student_data['endDate'], '%Y-%m-%d').date()
+                    else:
+                        profile_data['end_date'] = student_data['endDate']
+                except:
+                    profile_data['end_date'] = date.today() + timedelta(days=365)
+            else:
+                profile_data['end_date'] = date.today() + timedelta(days=365)
+            
+            # Create student profile
+            student_profile = StudentProfile.objects.create(
+                user=user,
+                **profile_data
+            )
+            
+            return user, student_profile
+            
+        except Exception as e:
+            # Transaction will automatically rollback due to @transaction.atomic decorator
+            raise Exception(f"User to student conversion failed: {str(e)}")
