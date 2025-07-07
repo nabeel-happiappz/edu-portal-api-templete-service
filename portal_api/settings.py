@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'otp_auth',
     'reports',
     'packages',
+    'courses',
 ]
 
 MIDDLEWARE = [
