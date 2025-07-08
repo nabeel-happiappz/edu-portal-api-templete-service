@@ -216,7 +216,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n      \"email\": \"tsesst.user@example.com\",\r\n      \"username\": \"tessstuser\",\r\n      \"password\": \"aSecurePassword123!\",\r\n      \"first_name\": \"Test\",\r\n      \"last_name\": \"User\",\r\n      \"role\": \"user\"\r\n    }",
+							"raw": "{\r\n      \"email\": \"tsessst.user@example.com\",\r\n      \"username\": \"tesssstuser\",\r\n      \"password\": \"aSecurePassword123!\",\r\n      \"first_name\": \"Test\",\r\n      \"last_name\": \"User\",\r\n      \"role\": \"user\"\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -697,7 +697,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"studentName\": \"test\",\r\n  \"course\": \"DHA\",\r\n  \"amount\": 1500.00,\r\n  \"date\": \"2024-01-15\",\r\n  \"status\": \"Pending\"\r\n}",
+							"raw": "{\r\n  \"studentName\": \"tesssstuser\",\r\n  \"course\": \"DHA\",\r\n  \"amount\": 1500.00,\r\n  \"date\": \"2024-01-15\",\r\n  \"status\": \"Paid\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -958,6 +958,56 @@
 						"reports",
 						"admin_report",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin Dashboard",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/dashboard/admin/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"dashboard",
+						"admin",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "student Dashboard",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/dashboard/student/?username=tesssstuser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"dashboard",
+						"student",
+						""
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "tesssstuser"
+						}
 					]
 				}
 			},
