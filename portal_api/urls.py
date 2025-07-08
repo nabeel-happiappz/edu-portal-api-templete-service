@@ -43,6 +43,7 @@ urlpatterns = [
     path('api/courses/', include('courses.urls')),
     path('api/departments/', include('departments.urls')),
     path('api/payments/', include('payments.urls')),
+    path('api/dashboard/', include('dashboard.urls')),
     
     # Student creation endpoint
     path('api/students/create', create_student, name='create-student'),
