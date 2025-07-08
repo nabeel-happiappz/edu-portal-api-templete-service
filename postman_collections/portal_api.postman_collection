@@ -1,0 +1,515 @@
+{
+	"info": {
+		"_postman_id": "05bf328f-0f4b-4a03-b712-3dbc3e5a8986",
+		"name": "PYTHON DJANGO TRAINING",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40304315"
+	},
+	"item": [
+		{
+			"name": "FIRST APP",
+			"item": [
+				{
+					"name": "Practice",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/firstapp/hello",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"firstapp",
+								"hello"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "test1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/testBase/sum",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"testBase",
+								"sum"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OTP",
+			"item": [
+				{
+					"name": "Generate OTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"identifier\": \"nabeelhashim.ofc@gmail.com\",\r\n    \"otp_type\": \"email\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/otp/request/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"otp",
+								"request",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vERIFY oTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"identifier\": \"nabeelhashim.ofc@gmail.com\",\r\n    \"otp_type\": \"email\",\r\n    \"code\": \"913896\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/otp/verify/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"otp",
+								"verify",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "QUESTIONS",
+			"item": [
+				{
+					"name": "Create questions",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"question_type\": 1,\r\n    \"content\": \"What is the capital of France?\",\r\n    \"options\": {\r\n        \"A\": \"London\",\r\n        \"B\": \"Paris\",\r\n        \"C\": \"Berlin\",\r\n        \"D\": \"Madrid\"\r\n    },\r\n    \"correct_answer\": {\r\n        \"answer\": \"B\"\r\n    },\r\n    \"explanation\": \"Paris is the capital and largest city of France\",\r\n    \"duration\": 2,\r\n    \"department\": \"Geography\",\r\n    \"courses\": [\"World Geography\", \"European Studies\"],\r\n    \"roles\": [\"student\", \"user\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/questions/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"questions",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "STUDENT",
+			"item": [
+				{
+					"name": "Create Student",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"John Student\",\r\n    \"address\": \"123 Main St, Apt 4B, Downtown Area\",\r\n    \"district\": \"Central District\",\r\n    \"state\": \"California\",\r\n    \"pinCode\": \"90001\",\r\n    \"courses\": [\r\n        \"NCLEX\",\r\n        \"DHA\"\r\n    ],\r\n    \"mobile\": \"555-123-4567\",\r\n    \"countryCode\": \"+1\",\r\n    \"mobileVerified\": true,\r\n    \"email\": \"john.student@example.com\",\r\n    \"emailVerified\": true,\r\n    \"startDate\": \"2024-01-15\",\r\n    \"endDate\": \"2024-07-15\",\r\n    \"username\": \"john_student\",\r\n    \"password\": \"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/students/create",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"students",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "USER",
+			"item": [
+				{
+					"name": "Create user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"email\": \"test.user@example.com\",\r\n      \"username\": \"testuser\",\r\n      \"password\": \"aSecurePassword123!\",\r\n      \"first_name\": \"Test\",\r\n      \"last_name\": \"User\",\r\n      \"role\": \"user\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth/register/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"register",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login auth user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username_or_email\": \"testuser\",\r\n    \"password\": \"test5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth/login/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update password with old",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username_or_email\": \"test.user@example.com\",\r\n  \"old_password\": \"test2\",\r\n  \"new_password\": \"test3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth/update-password-with-old/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"update-password-with-old",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update password with username",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username_or_email\": \"test.user@example.com\",\r\n  \"new_password\": \"test5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth/update-password/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"update-password",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetch all user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/users/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PACKAGE",
+			"item": [
+				{
+					"name": "Create Package",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Premium Package\",\r\n    \"description\": \"Access to 1000 practice questions with detailed analytics\",\r\n    \"price\": 1200,\r\n    \"currency\": \"INR\",\r\n    \"question_count\": 1000,\r\n    \"validity_days\": 365,\r\n    \"allowed_attempts\": \"unlimited\",\r\n    \"includes_explanations\": true,\r\n    \"includes_analytics\": true,\r\n    \"is_active\": true,\r\n    \"tags\": [\r\n        \"advanced\",\r\n        \"premium\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/packages/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"packages",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Packages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/packages/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"packages",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Package By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/packages/1/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"packages",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Package By ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Basic Package - Updated\",\r\n    \"description\": \"Access to 600 practice questions with updated content\",\r\n    \"price\": 600,\r\n    \"question_count\": 600,\r\n    \"validity_days\": 200,\r\n    \"tags\": [\r\n        \"beginner\",\r\n        \"popular\",\r\n        \"updated\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/packages/1/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"packages",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Package By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Basic Package - Updated\",\r\n    \"description\": \"Access to 600 practice questions with updated content\",\r\n    \"price\": 600,\r\n    \"question_count\": 600,\r\n    \"validity_days\": 200,\r\n    \"tags\": [\r\n        \"beginner\",\r\n        \"popular\",\r\n        \"updated\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/packages/1/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"packages",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
