@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'reports',
     'packages',
     'courses',
+    'departments',
 ]
 
 MIDDLEWARE = [
