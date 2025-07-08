@@ -20,3 +20,4 @@ class StudentStatsSerializer(serializers.Serializer):
     username = serializers.CharField(help_text="Username of the student")
     practice_sessions = serializers.IntegerField(help_text="Total number of practice sessions (reports)")
     questions_completed = serializers.IntegerField(help_text="Total number of questions attempted")
+    enrollment_date = serializers.CharField(help_text="Enrollment date (user created date)", required=False)

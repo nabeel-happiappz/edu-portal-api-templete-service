@@ -114,11 +114,21 @@ def student_dashboard_stats(request):
     questions_completed = student_reports.aggregate(
         total=Sum('questions_attend')
     )['total'] or 0
-    
+
+    # Fetch enrollment date from User model
+    enrollment_date = None
+    try:
+        user = User.objects.get(username=username)
+        if user.date_joined:
+            enrollment_date = user.date_joined.date().isoformat()
+    except User.DoesNotExist:
+        pass
+
     stats = {
         'username': username,
         'practice_sessions': practice_sessions,
-        'questions_completed': questions_completed
+        'questions_completed': questions_completed,
+        'enrollment_date': enrollment_date,
     }
     
     serializer = StudentStatsSerializer(data=stats)
