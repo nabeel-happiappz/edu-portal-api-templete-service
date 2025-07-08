@@ -55,6 +55,49 @@ URL: http://localhost:8000/api/dashboard/admin/
 - `200 OK`: Statistics retrieved successfully
 - `500 Internal Server Error`: Server error
 
+### 2. Student Dashboard Statistics
+
+Get dashboard statistics for a specific student based on their username.
+
+**Endpoint:** `GET /api/dashboard/student/`
+
+**Authentication:** None required
+
+**Query Parameters:**
+- `username` (required): Username of the student
+
+**Headers:**
+```json
+{
+  "Content-Type": "application/json"
+}
+```
+
+**Request:**
+```
+Method: GET
+URL: http://localhost:8000/api/dashboard/student/?username=john.doe
+```
+
+**Response Example:**
+```json
+{
+  "username": "john.doe",
+  "practice_sessions": 15,
+  "questions_completed": 120
+}
+```
+
+**Response Fields:**
+- `username`: Username of the student
+- `practice_sessions`: Total number of practice sessions (reports) by the student
+- `questions_completed`: Total number of questions attempted across all practice sessions
+
+**Status Codes:**
+- `200 OK`: Statistics retrieved successfully
+- `400 Bad Request`: Username parameter missing
+- `500 Internal Server Error`: Server error
+
 ## Testing Steps
 
 ### Step 1: Setup Postman
